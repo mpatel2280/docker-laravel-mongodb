@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+    # Mongodb container
+
+    laraveldb8086:
+        image: patelm2280/docker-mongodb7
+        container_name: laravel11_db8086
+        restart: always
+        volumes:
+            - db-data8086:/bitnami/mongodb
+        environment:
+            POSTGRES_DB: laravel_webapp8086
+            POSTGRES_PASSWORD: pwd_laravel11_db8086
+            POSTGRES_USER: user_laravel11_db8086
+        ports:
+          - "27018:27017"
+        networks:
+            - laravel118086
+
+    # Laravel apache project container
+    laravelwww8086:
+        build: docker/php
+        container_name: laravel11_www8086
+        ports:
+          - "8086:80"
+        volumes:
+            - ./docker/php/vhosts:/etc/apache2/sites-enabled
+            - ./:/var/www
+        restart: always
+        networks:
+            - laravel118086
+
+networks:
+    laravel118086:
+
+volumes:
+    db-data8086:
